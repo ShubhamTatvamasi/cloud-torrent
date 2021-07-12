@@ -32,9 +32,6 @@ spec:
       - name: {{ include "cloud-torrent.fullname" . }}-downloads
         persistentVolumeClaim:
           claimName: {{ include "cloud-torrent.fullname" . }}-downloads
-      - name: {{ include "cloud-torrent.fullname" . }}-torrents
-        persistentVolumeClaim:
-          claimName: {{ include "cloud-torrent.fullname" . }}-torrents
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -60,8 +57,6 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.pvc.downloads.mountPath }}
               name: {{ include "cloud-torrent.fullname" . }}-downloads
-            - mountPath: {{ .Values.pvc.torrents.mountPath }}
-              name: {{ include "cloud-torrent.fullname" . }}-torrents
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
