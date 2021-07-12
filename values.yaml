@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: jpillora/cloud-torrent
+  repository: boypt/cloud-torrent
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
@@ -15,10 +15,14 @@ nameOverride: ""
 fullnameOverride: ""
 
 pvc:
-  enabled: false
+  enabled: true
   accessModes: ReadWriteMany
-  storage: 1Gi
-  mountPath: "/downloads"
+  downloads:
+    storage: 30Gi
+    mountPath: "/downloads"
+  torrents: 
+    storage: 10M
+    mountPath: "/torrents"
 
 serviceAccount:
   # Specifies whether a service account should be created

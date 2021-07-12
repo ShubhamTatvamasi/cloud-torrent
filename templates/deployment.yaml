@@ -27,11 +27,14 @@ spec:
       serviceAccountName: {{ include "cloud-torrent.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- if .Values.pvc.enabled -}}
+      {{- if .Values.pvc.enabled }}
       volumes:
-      - name: {{ include "cloud-torrent.fullname" . }}
+      - name: {{ include "cloud-torrent.fullname" . }}-downloads
         persistentVolumeClaim:
-          claimName: {{ include "cloud-torrent.fullname" . }}-pvc
+          claimName: {{ include "cloud-torrent.fullname" . }}-downloads
+      - name: {{ include "cloud-torrent.fullname" . }}-torrents
+        persistentVolumeClaim:
+          claimName: {{ include "cloud-torrent.fullname" . }}-torrents
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -53,10 +56,12 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if .Values.pvc.enabled -}}
+          {{- if .Values.pvc.enabled }}
           volumeMounts:
-            - mountPath: {{ .Values.pvc.mountPath }}
-              name: {{ include "cloud-torrent.fullname" . }}
+            - mountPath: {{ .Values.pvc.downloads.mountPath }}
+              name: {{ include "cloud-torrent.fullname" . }}-downloads
+            - mountPath: {{ .Values.pvc.torrents.mountPath }}
+              name: {{ include "cloud-torrent.fullname" . }}-torrents
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
