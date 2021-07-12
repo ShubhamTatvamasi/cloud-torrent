@@ -20,9 +20,6 @@ pvc:
   downloads:
     storage: 30Gi
     mountPath: "/downloads"
-  torrents: 
-    storage: 10M
-    mountPath: "/torrents"
 
 serviceAccount:
   # Specifies whether a service account should be created
